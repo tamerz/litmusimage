@@ -1,11 +1,15 @@
 name: CI/CD
 
+permissions:
+  contents: read
+  packages: write
+
 on:
   pull_request:
-    types: [ opened, synchronize ]
-    branches: [ main ]
+    types: [opened, synchronize]
+    branches: [main]
   push:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
   prepare:
@@ -33,16 +37,16 @@ jobs:
           import os
           import re
           import subprocess
-          
+
           re_image = re_dockerfile = ''
           changed_files = json.loads("${{ steps.changed-files.outputs.all_changed_files }}")
           with open('images.json') as fd:
             builds = json.load(fd)
-          
+
           dockerfiles = list(map(lambda v: v.removesuffix('.dockerfile'), filter(lambda v: re.match('.*dockerfile$', v), changed_files)))
           if len(dockerfiles) > 0:
               re_dockerfile = '|'.join(dockerfiles)
-          
+
           if 'images.json' in changed_files:
               try:
                   data = subprocess.run(['git', 'show', 'HEAD^:images.json'], stdout=subprocess.PIPE).stdout.decode('utf-8')
@@ -54,7 +58,7 @@ jobs:
                       re_image = '|'.join(map(lambda v: f"{v['image']}:{v['tag']}", diff))
               except json.decoder.JSONDecodeError:
                   re_image = '.*'
-          
+
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
             if re_dockerfile == re_image:
               print('do_build=false', file=output)
