@@ -35,6 +35,7 @@ Images get [uploaded automatically][2] and are rebuilt [nightly if necessary][3]
 | rockylinux      | 10      | dnf_systemd        | rockylinux/rockylinux                    | 10       |
 | almalinux       | 8       | dnf_systemd        | almalinux                                | 8        |
 | almalinux       | 9       | dnf_systemd        | almalinux                                | 9        |
+| almalinux       | 10      | dnf_systemd        | almalinux                                | 10       |
 | redhat          | 7       | yum_systemd_ssh    | registry.access.redhat.com/ubi7/ubi-init | latest   |
 | redhat          | 8       | yum_systemd        | redhat/ubi8                              | latest   |
 | redhat          | 9       | dnf_systemd        | redhat/ubi9                              | latest   |
