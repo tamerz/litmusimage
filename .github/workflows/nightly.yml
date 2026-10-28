@@ -2,12 +2,18 @@ name: Nightly
 
 on:
   schedule:
-    - cron: '0 0 * * *'
+    - cron: "0 0 * * *"
 
 jobs:
-  build:
+  build-redhat:
     uses: ./.github/workflows/template_build_deploy.yml
     with:
-      image: .*
+      image: redhat.*
+      gated: false
+    secrets: inherit
+  build-almalinux:
+    uses: ./.github/workflows/template_build_deploy.yml
+    with:
+      image: almalinux.*
       gated: false
     secrets: inherit
