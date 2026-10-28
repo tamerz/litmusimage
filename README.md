@@ -14,7 +14,7 @@ Images get [uploaded automatically][2] and are rebuilt [nightly if necessary][3]
 ## Buildable images
 
 | image           | tag     | dockerfile         | base_image                               | base_tag |
-|-----------------|---------|--------------------|------------------------------------------|----------|
+| --------------- | ------- | ------------------ | ---------------------------------------- | -------- |
 | ubuntu          | 18.04   | apt_sysvinit-utils | ubuntu                                   | 18.04    |
 | ubuntu          | 20.04   | apt_sysvinit-utils | ubuntu                                   | 20.04    |
 | ubuntu          | 22.04   | apt_sysvinit-utils | ubuntu                                   | 22.04    |
@@ -30,13 +30,15 @@ Images get [uploaded automatically][2] and are rebuilt [nightly if necessary][3]
 | oraclelinux     | 7       | yum_systemd        | oraclelinux                              | 7        |
 | oraclelinux     | 8       | dnf_systemd        | oraclelinux                              | 8        |
 | oraclelinux     | 9       | yum_systemd        | oraclelinux                              | 9        |
-| rockylinux      | 8       | yum_systemd        | rockylinux/rockylinux                    | 8        |
-| rockylinux      | 9       | yum_systemd        | rockylinux/rockylinux                    | 9        |
-| almalinux       | 8       | yum_systemd_ssh    | almalinux                                | 8        |
-| almalinux       | 9       | yum_systemd        | almalinux                                | 9        |
-| redhat          | 7       | yum_systemd        | registry.access.redhat.com/ubi7/ubi-init | latest   |
-| redhat          | 8       | yum_systemd        | redhat/ubi8-init                         | latest   |
-| redhat          | 9       | yum_systemd        | redhat/ubi9-init                         | latest   |
+| rockylinux      | 8       | dnf_systemd        | rockylinux/rockylinux                    | 8        |
+| rockylinux      | 9       | dnf_systemd        | rockylinux/rockylinux                    | 9        |
+| rockylinux      | 10      | dnf_systemd        | rockylinux/rockylinux                    | 10       |
+| almalinux       | 8       | dnf_systemd        | almalinux                                | 8        |
+| almalinux       | 9       | dnf_systemd        | almalinux                                | 9        |
+| redhat          | 7       | yum_systemd_ssh    | registry.access.redhat.com/ubi7/ubi-init | latest   |
+| redhat          | 8       | yum_systemd        | redhat/ubi8                              | latest   |
+| redhat          | 9       | dnf_systemd        | redhat/ubi9                              | latest   |
+| redhat          | 10      | dnf_systemd        | redhat/ubi10                             | latest   |
 | debian          | 10      | apt_sysvinit-utils | debian                                   | 10       |
 | debian          | 11      | apt_sysvinit-utils | debian                                   | bullseye |
 | debian          | 12      | apt_sysvinit-utils | debian                                   | 12       |
@@ -68,7 +70,7 @@ The build command would be:
 ```bash
 docker build --rm --no-cache -t litmusimage/ubuntu:22.04 . \
   -f apt_sysvinit-utils.dockerfile \
-  --build-arg BASE_TAG=22.04 \
+  --build-arg BASE_IMAGE_TAG=22.04 \
   --build-arg OS_TYPE=ubuntu
 ```
 
@@ -112,17 +114,17 @@ docker rmi $(docker images -q)
 
 ## Add new images
 
-* Add/change dockerfile for the new image
-* Every dockerfile needs a `base_image` label where the base image id will be
+- Add/change dockerfile for the new image
+- Every dockerfile needs a `base_image` label where the base image id will be
   stored. This will be used in the [nightly build][3] to identify if the base image
   has been updated.
-* Change [images.json][4] to build the new images with CI
-* New images will be pushed to [Docker Hub][2] only on pushes to the main branch,
+- Change [images.json][4] to build the new images with CI
+- New images will be pushed to [Docker Hub][2] only on pushes to the main branch,
   and will be [updated nightly][3] in case the base image has changed.
 
 ## Future improvements
 
-* Introduce variants with puppet agent pre-installed for `litmus:install_agent`
+- Introduce variants with puppet agent pre-installed for `litmus:install_agent`
 
 ## Custom images
 
@@ -145,7 +147,6 @@ Action [secrets][6] and [variables][7]:
 [5]: https://ghcr.io
 [6]: https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions
 [7]: https://docs.github.com/en/actions/learn-github-actions/variables
-
 [nightly-badge]: https://github.com/puppetlabs/litmusimage/actions/workflows/nightly.yml/badge.svg
 [nightly-workflow]: https://github.com/puppetlabs/litmusimage/actions/workflows/nightly.yml
 [ci-badge]: https://github.com/puppetlabs/litmusimage/actions/workflows/ci.yml/badge.svg
